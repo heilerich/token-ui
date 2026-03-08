@@ -1,6 +1,7 @@
 import type { Token, CreateTokenRequest, CreateTokenResponse, Scope } from './types';
+import { base } from '$app/paths';
 
-const API_PREFIX = import.meta.env.VITE_API_PREFIX ?? '/api';
+const API_PREFIX = import.meta.env.VITE_API_PREFIX ?? `${base}/api`;
 const DEMO_MODE = import.meta.env.VITE_DEMO === 'true';
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
