@@ -17,6 +17,13 @@ interface Scope {
 	description: string;
 }
 
+function durationToMs(duration: unknown): number | null {
+	if (typeof duration !== 'string') return null;
+	const match = duration.match(/^(\d+)h$/);
+	if (!match) return null;
+	return Number(match[1]) * 60 * 60 * 1000;
+}
+
 export function mockApi(): Plugin {
 	const mocksDir = join(import.meta.dirname, 'api');
 
@@ -84,8 +91,11 @@ export function mockApi(): Plugin {
 					if (req.method === 'PATCH') {
 						const token = tokens.find((t) => t.id === id);
 						if (!token) return json(res, 404, { error: 'Not found' });
+						const bodyRaw = await readBody(req);
+						const body = bodyRaw ? JSON.parse(bodyRaw) : {};
+						const durationMs = durationToMs(body.duration) ?? 720 * 60 * 60 * 1000;
 						token.expires_at = new Date(
-							new Date(token.expires_at).getTime() + 90 * 24 * 60 * 60 * 1000
+							new Date(token.expires_at).getTime() + durationMs
 						).toISOString();
 						return json(res, 200, token);
 					}

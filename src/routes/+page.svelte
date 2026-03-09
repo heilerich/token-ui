@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Token, Scope } from '$lib/types';
+	import type { Token, Scope, TokenExtensionDuration } from '$lib/types';
 	import * as api from '$lib/api';
 	import TokenList from '$lib/components/TokenList.svelte';
 	import CreateTokenModal from '$lib/components/CreateTokenModal.svelte';
 	import DeleteConfirmModal from '$lib/components/DeleteConfirmModal.svelte';
 	import SecretDisplayModal from '$lib/components/SecretDisplayModal.svelte';
+	import ExtendTokenModal from '$lib/components/ExtendTokenModal.svelte';
 
 	let tokens = $state<Token[]>([]);
 	let scopes = $state<Scope[]>([]);
@@ -14,6 +15,7 @@
 
 	let showCreateModal = $state(false);
 	let tokenToDelete = $state<Token | null>(null);
+	let tokenToExtend = $state<Token | null>(null);
 	let createdSecret = $state<{ name: string; secret: string } | null>(null);
 
 	async function loadTokens() {
@@ -60,9 +62,11 @@
 		}
 	}
 
-	async function handleExtend(token: Token) {
+	async function handleExtend(duration: TokenExtensionDuration) {
+		if (!tokenToExtend) return;
 		try {
-			await api.extendToken(token.id);
+			await api.extendToken(tokenToExtend.id, duration);
+			tokenToExtend = null;
 			await loadTokens();
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to extend token';
@@ -96,7 +100,7 @@
 	{#if loading}
 		<div class="py-12 text-center text-gray-500">Loading...</div>
 	{:else}
-		<TokenList {tokens} ondelete={(t) => (tokenToDelete = t)} onextend={handleExtend} />
+		<TokenList {tokens} ondelete={(t) => (tokenToDelete = t)} onextend={(t) => (tokenToExtend = t)} />
 	{/if}
 </div>
 
@@ -109,6 +113,14 @@
 		token={tokenToDelete}
 		onconfirm={handleDelete}
 		oncancel={() => (tokenToDelete = null)}
+	/>
+{/if}
+
+{#if tokenToExtend}
+	<ExtendTokenModal
+		token={tokenToExtend}
+		onconfirm={handleExtend}
+		oncancel={() => (tokenToExtend = null)}
 	/>
 {/if}
 
