@@ -87,9 +87,7 @@ export async function extendToken(id: string, duration: TokenExtensionDuration):
 		const tokens = await getDemoTokens();
 		const token = tokens.find((t) => t.id === id);
 		if (!token) throw new Error('Token not found');
-		token.expires_at = new Date(
-			new Date(token.expires_at).getTime() + durationToMs(duration)
-		).toISOString();
+		token.expires_at = new Date(Date.now() + durationToMs(duration)).toISOString();
 		return { ...token };
 	}
 	const body: ExtendTokenRequest = { duration };
