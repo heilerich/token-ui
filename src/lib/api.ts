@@ -1,4 +1,11 @@
-import type { Token, CreateTokenRequest, CreateTokenResponse, Scope } from './types';
+import type {
+	Token,
+	CreateTokenRequest,
+	CreateTokenResponse,
+	Scope,
+	TokenExtensionPeriod,
+	ExtendTokenRequest
+} from './types';
 import { base } from '$app/paths';
 
 const API_PREFIX = import.meta.env.VITE_API_PREFIX ?? `${base}/api`;
@@ -69,17 +76,24 @@ export async function deleteToken(id: string): Promise<void> {
 	return request('DELETE', `/tokens/${encodeURIComponent(id)}`);
 }
 
-export async function extendToken(id: string): Promise<Token> {
+const EXTENSION_DAYS: Record<TokenExtensionPeriod, number> = {
+	'30d': 30,
+	'6m': 182,
+	'12m': 365
+};
+
+export async function extendToken(id: string, period: TokenExtensionPeriod): Promise<Token> {
 	if (DEMO_MODE) {
 		const tokens = await getDemoTokens();
 		const token = tokens.find((t) => t.id === id);
 		if (!token) throw new Error('Token not found');
 		token.expires_at = new Date(
-			new Date(token.expires_at).getTime() + 90 * 24 * 60 * 60 * 1000
+			new Date(token.expires_at).getTime() + EXTENSION_DAYS[period] * 24 * 60 * 60 * 1000
 		).toISOString();
 		return { ...token };
 	}
-	return request('PATCH', `/tokens/${encodeURIComponent(id)}`);
+	const body: ExtendTokenRequest = { period };
+	return request('PATCH', `/tokens/${encodeURIComponent(id)}`, body);
 }
 
 export async function listScopes(): Promise<Scope[]> {

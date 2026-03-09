@@ -21,3 +21,9 @@ export interface Scope {
 	name: string;
 	description: string;
 }
+
+export type TokenExtensionPeriod = '30d' | '6m' | '12m';
+
+export interface ExtendTokenRequest {
+	period: TokenExtensionPeriod;
+}
