@@ -94,9 +94,7 @@ export function mockApi(): Plugin {
 						const bodyRaw = await readBody(req);
 						const body = bodyRaw ? JSON.parse(bodyRaw) : {};
 						const durationMs = durationToMs(body.duration) ?? 720 * 60 * 60 * 1000;
-						token.expires_at = new Date(
-							new Date(token.expires_at).getTime() + durationMs
-						).toISOString();
+						token.expires_at = new Date(Date.now() + durationMs).toISOString();
 						return json(res, 200, token);
 					}
 				}
