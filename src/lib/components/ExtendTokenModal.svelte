@@ -14,7 +14,7 @@
 
 	const options: Array<{ value: TokenExtensionDuration; label: string }> = [
 		{ value: '720h', label: '30 days' },
-		{ value: '4368h', label: '6 months' },
+		{ value: '4380h', label: '6 months' },
 		{ value: '8760h', label: '12 months' }
 	];
 

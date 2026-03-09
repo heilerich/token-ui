@@ -93,7 +93,7 @@ export function mockApi(): Plugin {
 						if (!token) return json(res, 404, { error: 'Not found' });
 						const bodyRaw = await readBody(req);
 						const body = bodyRaw ? JSON.parse(bodyRaw) : {};
-						const durationMs = durationToMs(body.duration) ?? durationToMs('720h') ?? 0;
+						const durationMs = durationToMs(body.duration) ?? 720 * 60 * 60 * 1000;
 						token.expires_at = new Date(
 							new Date(token.expires_at).getTime() + durationMs
 						).toISOString();

@@ -77,9 +77,9 @@ export async function deleteToken(id: string): Promise<void> {
 }
 
 function durationToMs(duration: TokenExtensionDuration): number {
-	const [_, hours] = duration.match(/^(\d+)h$/) ?? [];
-	if (!hours) throw new Error(`Unsupported duration: ${duration}`);
-	return Number(hours) * 60 * 60 * 1000;
+	const match = duration.match(/^(\d+)h$/);
+	if (!match) throw new Error(`Unsupported duration: ${duration}`);
+	return Number(match[1]) * 60 * 60 * 1000;
 }
 
 export async function extendToken(id: string, duration: TokenExtensionDuration): Promise<Token> {
