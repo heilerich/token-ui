@@ -4,8 +4,18 @@ import { base } from '$app/paths';
 const API_PREFIX = import.meta.env.VITE_API_PREFIX ?? `${base}/api`;
 const DEMO_MODE = import.meta.env.VITE_DEMO === 'true';
 
+function getNamespace(): string | null {
+	if (typeof window === 'undefined') return null;
+	return new URLSearchParams(window.location.search).get('ns');
+}
+
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
-	const url = DEMO_MODE ? `${API_PREFIX}${path}.json` : `${API_PREFIX}${path}`;
+	let url = DEMO_MODE ? `${API_PREFIX}${path}.json` : `${API_PREFIX}${path}`;
+	const ns = getNamespace();
+	if (ns && !DEMO_MODE) {
+		const separator = url.includes('?') ? '&' : '?';
+		url = `${url}${separator}ns=${encodeURIComponent(ns)}`;
+	}
 	const res = await fetch(url, {
 		method: DEMO_MODE ? 'GET' : method,
 		headers: !DEMO_MODE && body ? { 'Content-Type': 'application/json' } : undefined,

@@ -47,7 +47,8 @@ export function mockApi(): Plugin {
 			loadFixtures();
 
 			server.middlewares.use(async (req, res, next) => {
-				const url = req.url ?? '';
+				const rawUrl = req.url ?? '';
+				const { pathname: url } = new URL(rawUrl, 'http://localhost');
 
 				if (url === '/api/scopes' && req.method === 'GET') {
 					return json(res, 200, scopes);
