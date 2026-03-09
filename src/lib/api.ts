@@ -3,7 +3,7 @@ import type {
 	CreateTokenRequest,
 	CreateTokenResponse,
 	Scope,
-	TokenExtensionPeriod,
+	TokenExtensionDuration,
 	ExtendTokenRequest
 } from './types';
 import { base } from '$app/paths';
@@ -76,23 +76,23 @@ export async function deleteToken(id: string): Promise<void> {
 	return request('DELETE', `/tokens/${encodeURIComponent(id)}`);
 }
 
-const EXTENSION_DAYS: Record<TokenExtensionPeriod, number> = {
-	'30d': 30,
-	'6m': 182,
-	'12m': 365
-};
+function durationToMs(duration: TokenExtensionDuration): number {
+	const [_, hours] = duration.match(/^(\d+)h$/) ?? [];
+	if (!hours) throw new Error(`Unsupported duration: ${duration}`);
+	return Number(hours) * 60 * 60 * 1000;
+}
 
-export async function extendToken(id: string, period: TokenExtensionPeriod): Promise<Token> {
+export async function extendToken(id: string, duration: TokenExtensionDuration): Promise<Token> {
 	if (DEMO_MODE) {
 		const tokens = await getDemoTokens();
 		const token = tokens.find((t) => t.id === id);
 		if (!token) throw new Error('Token not found');
 		token.expires_at = new Date(
-			new Date(token.expires_at).getTime() + EXTENSION_DAYS[period] * 24 * 60 * 60 * 1000
+			new Date(token.expires_at).getTime() + durationToMs(duration)
 		).toISOString();
 		return { ...token };
 	}
-	const body: ExtendTokenRequest = { period };
+	const body: ExtendTokenRequest = { duration };
 	return request('PATCH', `/tokens/${encodeURIComponent(id)}`, body);
 }
 

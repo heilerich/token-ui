@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Token, Scope, TokenExtensionPeriod } from '$lib/types';
+	import type { Token, Scope, TokenExtensionDuration } from '$lib/types';
 	import * as api from '$lib/api';
 	import TokenList from '$lib/components/TokenList.svelte';
 	import CreateTokenModal from '$lib/components/CreateTokenModal.svelte';
@@ -62,10 +62,10 @@
 		}
 	}
 
-	async function handleExtend(period: TokenExtensionPeriod) {
+	async function handleExtend(duration: TokenExtensionDuration) {
 		if (!tokenToExtend) return;
 		try {
-			await api.extendToken(tokenToExtend.id, period);
+			await api.extendToken(tokenToExtend.id, duration);
 			tokenToExtend = null;
 			await loadTokens();
 		} catch (e) {

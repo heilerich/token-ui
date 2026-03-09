@@ -17,11 +17,12 @@ interface Scope {
 	description: string;
 }
 
-const EXTENSION_DAYS = {
-	'30d': 30,
-	'6m': 182,
-	'12m': 365
-} as const;
+function durationToMs(duration: unknown): number | null {
+	if (typeof duration !== 'string') return null;
+	const match = duration.match(/^(\d+)h$/);
+	if (!match) return null;
+	return Number(match[1]) * 60 * 60 * 1000;
+}
 
 export function mockApi(): Plugin {
 	const mocksDir = join(import.meta.dirname, 'api');
@@ -92,10 +93,9 @@ export function mockApi(): Plugin {
 						if (!token) return json(res, 404, { error: 'Not found' });
 						const bodyRaw = await readBody(req);
 						const body = bodyRaw ? JSON.parse(bodyRaw) : {};
-						const period = body.period as keyof typeof EXTENSION_DAYS;
-						const extensionDays = EXTENSION_DAYS[period] ?? EXTENSION_DAYS['30d'];
+						const durationMs = durationToMs(body.duration) ?? durationToMs('720h') ?? 0;
 						token.expires_at = new Date(
-							new Date(token.expires_at).getTime() + extensionDays * 24 * 60 * 60 * 1000
+							new Date(token.expires_at).getTime() + durationMs
 						).toISOString();
 						return json(res, 200, token);
 					}

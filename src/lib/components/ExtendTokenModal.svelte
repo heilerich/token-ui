@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Token, TokenExtensionPeriod } from '$lib/types';
+	import type { Token, TokenExtensionDuration } from '$lib/types';
 	import Modal from './Modal.svelte';
 
 	let {
@@ -8,20 +8,20 @@
 		oncancel
 	}: {
 		token: Token;
-		onconfirm: (period: TokenExtensionPeriod) => void;
+		onconfirm: (duration: TokenExtensionDuration) => void;
 		oncancel: () => void;
 	} = $props();
 
-	const options: Array<{ value: TokenExtensionPeriod; label: string }> = [
-		{ value: '30d', label: '30 days' },
-		{ value: '6m', label: '6 months' },
-		{ value: '12m', label: '12 months' }
+	const options: Array<{ value: TokenExtensionDuration; label: string }> = [
+		{ value: '720h', label: '30 days' },
+		{ value: '4368h', label: '6 months' },
+		{ value: '8760h', label: '12 months' }
 	];
 
-	let selectedPeriod = $state<TokenExtensionPeriod>('30d');
+	let selectedDuration = $state<TokenExtensionDuration>('720h');
 
 	function submit() {
-		onconfirm(selectedPeriod);
+		onconfirm(selectedDuration);
 	}
 </script>
 
@@ -36,7 +36,7 @@
 					<input
 						type="radio"
 						name="extend-period"
-						bind:group={selectedPeriod}
+						bind:group={selectedDuration}
 						value={option.value}
 						class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
 					/>
