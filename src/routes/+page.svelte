@@ -35,9 +35,23 @@
 		}
 	}
 
-	onMount(async () => {
-		await Promise.all([loadTokens(), loadScopes()]);
-		loading = false;
+	onMount(() => {
+		Promise.all([loadTokens(), loadScopes()]).then(() => {
+			loading = false;
+		});
+
+		let currentNamespace = api.getNamespace();
+		const interval = window.parent !== window
+			? setInterval(async () => {
+					const ns = api.getNamespace();
+					if (ns !== currentNamespace) {
+						currentNamespace = ns;
+						await Promise.all([loadTokens(), loadScopes()]);
+					}
+				}, 500)
+			: undefined;
+
+		return () => clearInterval(interval);
 	});
 
 	async function handleCreate(name: string, selectedScopes: string[]) {

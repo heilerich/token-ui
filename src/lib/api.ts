@@ -11,7 +11,7 @@ import { base } from '$app/paths';
 const API_PREFIX = import.meta.env.VITE_API_PREFIX ?? `${base}/api`;
 const DEMO_MODE = import.meta.env.VITE_DEMO === 'true';
 
-function getNamespace(): string | null {
+export function getNamespace(): string | null {
 	if (typeof window === 'undefined') return null;
 	return (new URLSearchParams(window.location.search)).get('ns') || (new URLSearchParams(window.parent.location.search)).get('ns');
 }
