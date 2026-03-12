@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { Token, Scope, TokenExtensionDuration } from '$lib/types';
 	import * as api from '$lib/api';
+	import { getNamespace } from '$lib/api';
 	import TokenList from '$lib/components/TokenList.svelte';
 	import CreateTokenModal from '$lib/components/CreateTokenModal.svelte';
 	import DeleteConfirmModal from '$lib/components/DeleteConfirmModal.svelte';
@@ -35,9 +36,21 @@
 		}
 	}
 
-	onMount(async () => {
-		await Promise.all([loadTokens(), loadScopes()]);
-		loading = false;
+	onMount(() => {
+		Promise.all([loadTokens(), loadScopes()]).then(() => {
+			loading = false;
+		});
+
+		let currentNamespace = getNamespace();
+		const interval = setInterval(async () => {
+			const ns = getNamespace();
+			if (ns !== currentNamespace) {
+				currentNamespace = ns;
+				await Promise.all([loadTokens(), loadScopes()]);
+			}
+		}, 500);
+
+		return () => clearInterval(interval);
 	});
 
 	async function handleCreate(name: string, selectedScopes: string[]) {
