@@ -13,7 +13,7 @@ const DEMO_MODE = import.meta.env.VITE_DEMO === 'true';
 
 function getNamespace(): string | null {
 	if (typeof window === 'undefined') return null;
-	return new URLSearchParams(window.location.search).get('ns');
+	return (new URLSearchParams(window.location.search)).get('ns') || (new URLSearchParams(window.parent.location.search)).get('ns');
 }
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
