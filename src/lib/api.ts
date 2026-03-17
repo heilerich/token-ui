@@ -11,6 +11,41 @@ import { base } from '$app/paths';
 const API_PREFIX = import.meta.env.VITE_API_PREFIX ?? `${base}/api`;
 const DEMO_MODE = import.meta.env.VITE_DEMO === 'true';
 
+const MAX_RETRIES = 5;
+const MAX_BACKOFF_MS = 10_000;
+
+function sleep(ms: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchWithRetry(url: string, options: RequestInit): Promise<Response> {
+	let lastNetworkError: unknown;
+	for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+		let res: Response;
+		try {
+			res = await fetch(url, options);
+		} catch (networkError) {
+			lastNetworkError = networkError;
+			if (attempt < MAX_RETRIES) {
+				await sleep(Math.min(2 ** attempt * 1000, MAX_BACKOFF_MS));
+				continue;
+			}
+			throw networkError;
+		}
+		// Success or client error (4xx) — return immediately, no retry
+		if (res.ok || (res.status >= 400 && res.status < 500)) {
+			return res;
+		}
+		// Server error (5xx) — back off and retry if attempts remain
+		if (attempt < MAX_RETRIES) {
+			await sleep(Math.min(2 ** attempt * 1000, MAX_BACKOFF_MS));
+		} else {
+			return res;
+		}
+	}
+	throw lastNetworkError ?? new Error('Request failed');
+}
+
 export function getNamespace(): string | null {
 	if (typeof window === 'undefined') return null;
 	return (new URLSearchParams(window.location.search)).get('ns') || (new URLSearchParams(window.parent.location.search)).get('ns');
@@ -23,11 +58,14 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 		const separator = url.includes('?') ? '&' : '?';
 		url = `${url}${separator}ns=${encodeURIComponent(ns)}`;
 	}
-	const res = await fetch(url, {
+	const fetchOptions: RequestInit = {
 		method: DEMO_MODE ? 'GET' : method,
 		headers: !DEMO_MODE && body ? { 'Content-Type': 'application/json' } : undefined,
 		body: !DEMO_MODE && body ? JSON.stringify(body) : undefined
-	});
+	};
+	const res = DEMO_MODE
+		? await fetch(url, fetchOptions)
+		: await fetchWithRetry(url, fetchOptions);
 	if (!res.ok) {
 		const text = await res.text().catch(() => res.statusText);
 		throw new Error(`${method} ${path} failed: ${res.status} ${text}`);
