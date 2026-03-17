@@ -17,13 +17,13 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions, a11y_click_events_have_key_events -->
 <div
-	class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+	class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
 	onclick={onbackdrop}
 	role="presentation"
 >
-	<div class="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
-		<div class="mb-4 flex items-center justify-between">
-			<h2 class="text-lg font-semibold text-gray-900">{title}</h2>
+	<div class="w-full max-w-lg rounded bg-white shadow-xl">
+		<div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+			<h2 class="text-base font-medium text-gray-900">{title}</h2>
 			<button
 				onclick={onclose}
 				class="text-gray-400 hover:text-gray-600"
@@ -34,6 +34,8 @@
 				</svg>
 			</button>
 		</div>
-		{@render children()}
+		<div class="px-6 py-5">
+			{@render children()}
+		</div>
 	</div>
 </div>
