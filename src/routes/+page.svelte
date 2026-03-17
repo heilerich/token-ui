@@ -78,14 +78,14 @@
   <title>API Tokens</title>
 </svelte:head>
 
-<div class="p-6">
-  <div class="rounded bg-white shadow">
+<div>
+  <div class="bg-white shadow">
     <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
       <h1 class="text-xl font-medium text-gray-800">API Tokens</h1>
       <button
         onclick={() => (showCreateModal = true)}
         disabled={loading}
-        class="flex items-center gap-1 rounded bg-kubeflow-blue px-4 py-2 text-sm font-medium uppercase tracking-wide text-white hover:bg-kubeflow-blue-dark disabled:opacity-50"
+        class="flex items-center gap-1 rounded border border-kubeflow-blue px-4 py-2 text-sm font-medium uppercase tracking-wide text-kubeflow-blue hover:bg-blue-50 disabled:opacity-50"
       >
         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
