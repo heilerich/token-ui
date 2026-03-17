@@ -1,1 +1,6 @@
 @import 'tailwindcss';
+
+@theme {
+  --color-kubeflow-blue: #003f9c;
+  --color-kubeflow-blue-dark: #002d72;
+}

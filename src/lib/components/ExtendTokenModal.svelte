@@ -27,18 +27,18 @@
 
 <Modal title="Extend Token" onclose={oncancel}>
 	<form onsubmit={e => { e.preventDefault(); submit(); }}>
-		<p class="mb-4 text-gray-600">
+		<p class="mb-4 text-sm text-gray-600">
 			Select how long to extend <span class="font-semibold text-gray-900">{token.name}</span>.
 		</p>
 		<div class="mb-6 space-y-2">
 			{#each options as option (option.value)}
-				<label class="flex cursor-pointer items-center gap-3 rounded border border-gray-200 p-3 hover:bg-gray-50">
+				<label class="flex cursor-pointer items-center gap-3 rounded border border-gray-200 p-3 hover:bg-gray-50 has-[:checked]:border-kubeflow-blue has-[:checked]:bg-blue-50">
 					<input
 						type="radio"
 						name="extend-period"
 						bind:group={selectedDuration}
 						value={option.value}
-						class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+						class="h-4 w-4 border-gray-300 text-kubeflow-blue focus:ring-kubeflow-blue"
 					/>
 					<span class="text-sm font-medium text-gray-900">{option.label}</span>
 				</label>
@@ -48,13 +48,13 @@
 			<button
 				type="button"
 				onclick={oncancel}
-				class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+				class="rounded px-4 py-2 text-sm font-medium uppercase tracking-wide text-gray-600 hover:bg-gray-100"
 			>
 				Cancel
 			</button>
 			<button
 				type="submit"
-				class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+				class="rounded bg-kubeflow-blue px-4 py-2 text-sm font-medium uppercase tracking-wide text-white hover:bg-kubeflow-blue-dark"
 			>
 				Extend
 			</button>

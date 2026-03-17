@@ -42,20 +42,20 @@
 				type="text"
 				bind:value={name}
 				placeholder="e.g. CI Pipeline"
-				class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+				class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-kubeflow-blue focus:ring-1 focus:ring-kubeflow-blue focus:outline-none"
 			/>
 		</div>
 
 		<div class="mb-6">
 			<span class="mb-2 block text-sm font-medium text-gray-700">Scopes</span>
-			<div class="max-h-48 space-y-2 overflow-y-auto rounded-md border border-gray-200 p-3">
+			<div class="max-h-48 space-y-1 overflow-y-auto rounded border border-gray-200 p-3">
 				{#each scopes as scope (scope.id)}
 					<label class="flex cursor-pointer items-start gap-3 rounded p-1 hover:bg-gray-50">
 						<input
 							type="checkbox"
 							checked={selectedScopes.has(scope.id)}
 							onchange={() => toggleScope(scope.id)}
-							class="mt-0.5 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+							class="mt-0.5 h-4 w-4 rounded border-gray-300 text-kubeflow-blue focus:ring-kubeflow-blue"
 						/>
 						<div>
 							<span class="text-sm font-medium text-gray-900">{scope.name}</span>
@@ -72,14 +72,14 @@
 			<button
 				type="button"
 				onclick={oncancel}
-				class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+				class="rounded px-4 py-2 text-sm font-medium uppercase tracking-wide text-gray-600 hover:bg-gray-100"
 			>
 				Cancel
 			</button>
 			<button
 				type="submit"
 				disabled={!canSubmit}
-				class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+				class="rounded bg-kubeflow-blue px-4 py-2 text-sm font-medium uppercase tracking-wide text-white hover:bg-kubeflow-blue-dark disabled:opacity-50 disabled:cursor-not-allowed"
 			>
 				Create Token
 			</button>

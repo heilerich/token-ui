@@ -93,38 +93,42 @@
   <title>API Tokens</title>
 </svelte:head>
 
-<div class="mx-auto max-w-5xl px-4 py-8">
-  <div class="mb-6 flex items-center justify-between">
-    <h1 class="text-2xl font-bold text-gray-900">API Tokens</h1>
-    <button
-      onclick={() => (showCreateModal = true)}
-      disabled={loading}
-      class="rounded-md bg-kubeflowBlue px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-    >
-      Create Token
-    </button>
-  </div>
-
-  {#if error}
-    <div
-      class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
-    >
-      {error}
-      <button onclick={() => (error = null)} class="ml-2 font-medium underline"
-        >Dismiss</button
+<div class="p-6">
+  <div class="rounded bg-white shadow">
+    <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+      <h1 class="text-xl font-medium text-gray-800">API Tokens</h1>
+      <button
+        onclick={() => (showCreateModal = true)}
+        disabled={loading}
+        class="flex items-center gap-1 rounded bg-kubeflow-blue px-4 py-2 text-sm font-medium uppercase tracking-wide text-white hover:bg-kubeflow-blue-dark disabled:opacity-50"
       >
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        New Token
+      </button>
     </div>
-  {/if}
 
-  {#if loading}
-    <div class="py-12 text-center text-gray-500">Loading...</div>
-  {:else}
-    <TokenList
-      {tokens}
-      ondelete={(t) => (tokenToDelete = t)}
-      onextend={(t) => (tokenToExtend = t)}
-    />
-  {/if}
+    {#if error}
+      <div class="mx-6 mt-4 flex items-center gap-3 rounded border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+        </svg>
+        <span class="flex-1">{error}</span>
+        <button onclick={() => (error = null)} class="font-medium underline">Dismiss</button>
+      </div>
+    {/if}
+
+    {#if loading}
+      <div class="py-16 text-center text-sm text-gray-500">Loading…</div>
+    {:else}
+      <TokenList
+        {tokens}
+        ondelete={(t) => (tokenToDelete = t)}
+        onextend={(t) => (tokenToExtend = t)}
+      />
+    {/if}
+  </div>
 </div>
 
 {#if showCreateModal}
