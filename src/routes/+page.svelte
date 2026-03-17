@@ -19,26 +19,21 @@
   let createdSecret = $state<{ name: string; secret: string } | null>(null);
 
   async function loadTokens() {
-    try {
-      tokens = await api.listTokens();
-      error = null;
-    } catch (e) {
-      error = e instanceof Error ? e.message : "Failed to load tokens";
-    }
+    tokens = await api.listTokens();
   }
 
   async function loadScopes() {
-    try {
-      scopes = await api.listScopes();
-    } catch (e) {
-      error = e instanceof Error ? e.message : "Failed to load scopes";
-    }
+    scopes = await api.listScopes();
   }
 
   onMount(() => {
-    Promise.all([loadTokens(), loadScopes()]).then(() => {
-      loading = false;
-    });
+    Promise.all([loadTokens(), loadScopes()])
+      .catch((e) => {
+        error = e instanceof Error ? e.message : 'Failed to load';
+      })
+      .finally(() => {
+        loading = false;
+      });
 
     let currentNamespace = api.getNamespace();
     const interval =
@@ -47,7 +42,9 @@
             const ns = api.getNamespace();
             if (ns !== currentNamespace) {
               currentNamespace = ns;
-              await Promise.all([loadTokens(), loadScopes()]);
+              // Silently ignore errors during background namespace refreshes;
+              // the user can trigger a manual refresh if needed.
+              await Promise.all([loadTokens(), loadScopes()]).catch(() => {});
             }
           }, 500)
         : undefined;
@@ -56,36 +53,24 @@
   });
 
   async function handleCreate(name: string, selectedScopes: string[]) {
-    try {
-      const result = await api.createToken({ name, scopes: selectedScopes });
-      showCreateModal = false;
-      createdSecret = { name: result.token.name, secret: result.secret };
-      await loadTokens();
-    } catch (e) {
-      error = e instanceof Error ? e.message : "Failed to create token";
-    }
+    const result = await api.createToken({ name, scopes: selectedScopes });
+    await loadTokens();
+    showCreateModal = false;
+    createdSecret = { name: result.token.name, secret: result.secret };
   }
 
   async function handleDelete() {
     if (!tokenToDelete) return;
-    try {
-      await api.deleteToken(tokenToDelete.id);
-      tokenToDelete = null;
-      await loadTokens();
-    } catch (e) {
-      error = e instanceof Error ? e.message : "Failed to delete token";
-    }
+    await api.deleteToken(tokenToDelete.id);
+    await loadTokens();
+    tokenToDelete = null;
   }
 
   async function handleExtend(duration: TokenExtensionDuration) {
     if (!tokenToExtend) return;
-    try {
-      await api.extendToken(tokenToExtend.id, duration);
-      tokenToExtend = null;
-      await loadTokens();
-    } catch (e) {
-      error = e instanceof Error ? e.message : "Failed to extend token";
-    }
+    await api.extendToken(tokenToExtend.id, duration);
+    await loadTokens();
+    tokenToExtend = null;
   }
 </script>
 

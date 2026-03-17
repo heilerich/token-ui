@@ -1,15 +1,19 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	let { title, onclose, children }: { title: string; onclose: () => void; children: Snippet } =
-		$props();
+	let {
+		title,
+		onclose,
+		children,
+		busy = false
+	}: { title: string; onclose: () => void; children: Snippet; busy?: boolean } = $props();
 
 	function onkeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape') onclose();
+		if (e.key === 'Escape' && !busy) onclose();
 	}
 
 	function onbackdrop(e: MouseEvent) {
-		if (e.target === e.currentTarget) onclose();
+		if (e.target === e.currentTarget && !busy) onclose();
 	}
 </script>
 
@@ -26,7 +30,8 @@
 			<h2 class="text-base font-medium text-gray-900">{title}</h2>
 			<button
 				onclick={onclose}
-				class="text-gray-400 hover:text-gray-600"
+				disabled={busy}
+				class="text-gray-400 hover:text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed"
 				aria-label="Close"
 			>
 				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

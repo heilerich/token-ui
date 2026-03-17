@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Token, TokenExtensionDuration } from '$lib/types';
 	import Modal from './Modal.svelte';
+	import Spinner from './Spinner.svelte';
+	import ErrorBanner from './ErrorBanner.svelte';
 
 	let {
 		token,
@@ -8,7 +10,7 @@
 		oncancel
 	}: {
 		token: Token;
-		onconfirm: (duration: TokenExtensionDuration) => void;
+		onconfirm: (duration: TokenExtensionDuration) => Promise<void>;
 		oncancel: () => void;
 	} = $props();
 
@@ -19,14 +21,28 @@
 	];
 
 	let selectedDuration = $state<TokenExtensionDuration>('720h');
+	let loading = $state(false);
+	let error = $state<string | null>(null);
 
-	function submit() {
-		onconfirm(selectedDuration);
+	async function submit() {
+		if (loading) return;
+		loading = true;
+		error = null;
+		try {
+			await onconfirm(selectedDuration);
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to extend token';
+		} finally {
+			loading = false;
+		}
 	}
 </script>
 
-<Modal title="Extend Token" onclose={oncancel}>
+<Modal title="Extend Token" onclose={oncancel} busy={loading}>
 	<form onsubmit={e => { e.preventDefault(); submit(); }}>
+		{#if error}
+			<ErrorBanner message={error} ondismiss={() => (error = null)} />
+		{/if}
 		<p class="mb-4 text-sm text-gray-600">
 			Select how long to extend <span class="font-semibold text-gray-900">{token.name}</span>.
 		</p>
@@ -38,6 +54,7 @@
 						name="extend-period"
 						bind:group={selectedDuration}
 						value={option.value}
+						disabled={loading}
 						class="h-4 w-4 border-gray-300 text-kubeflow-blue focus:ring-kubeflow-blue"
 					/>
 					<span class="text-sm font-medium text-gray-900">{option.label}</span>
@@ -48,14 +65,17 @@
 			<button
 				type="button"
 				onclick={oncancel}
-				class="rounded px-4 py-2 text-sm font-medium uppercase tracking-wide text-gray-600 hover:bg-gray-100"
+				disabled={loading}
+				class="rounded px-4 py-2 text-sm font-medium uppercase tracking-wide text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
 			>
 				Cancel
 			</button>
 			<button
 				type="submit"
-				class="rounded bg-kubeflow-blue px-4 py-2 text-sm font-medium uppercase tracking-wide text-white hover:bg-kubeflow-blue-dark"
+				disabled={loading}
+				class="flex items-center gap-2 rounded bg-kubeflow-blue px-4 py-2 text-sm font-medium uppercase tracking-wide text-white hover:bg-kubeflow-blue-dark disabled:opacity-50 disabled:cursor-not-allowed"
 			>
+				{#if loading}<Spinner />{/if}
 				Extend
 			</button>
 		</div>
