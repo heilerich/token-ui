@@ -8,6 +8,8 @@
   import SecretDisplayModal from "$lib/components/SecretDisplayModal.svelte";
   import ExtendTokenModal from "$lib/components/ExtendTokenModal.svelte";
 
+  const API_NOTICE: string = import.meta.env.VITE_API_NOTICE ?? "Point your tool to https://example.com/v1 to access the API. Your tool should be compatible to the OpenAI API specification";
+
   let tokens = $state<Token[]>([]);
   let scopes = $state<Scope[]>([]);
   let loading = $state(true);
@@ -113,6 +115,10 @@
         onextend={(t) => (tokenToExtend = t)}
       />
     {/if}
+
+    <div class="border-t border-gray-200 px-6 py-3 text-sm text-gray-500">
+      {API_NOTICE}
+    </div>
   </div>
 </div>
 
