@@ -6,7 +6,7 @@ import type {
 	TokenExtensionDuration,
 	ExtendTokenRequest
 } from './types';
-import { base } from '$app/paths';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const API_PREFIX = import.meta.env.VITE_API_PREFIX ?? `${base}/api`;
 const DEMO_MODE = import.meta.env.VITE_DEMO === 'true';

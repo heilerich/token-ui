@@ -9,6 +9,6 @@ RUN npm run build
 
 FROM caddy:2-alpine
 RUN apk upgrade
-COPY --from=build /app/build /srv
+COPY --from=build /app/dist /srv
 COPY Caddyfile /etc/caddy/Caddyfile
 EXPOSE 8080

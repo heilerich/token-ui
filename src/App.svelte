@@ -7,6 +7,7 @@
   import DeleteConfirmModal from "$lib/components/DeleteConfirmModal.svelte";
   import SecretDisplayModal from "$lib/components/SecretDisplayModal.svelte";
   import ExtendTokenModal from "$lib/components/ExtendTokenModal.svelte";
+  import favicon from "$lib/assets/favicon.svg";
 
   const API_NOTICE: string = import.meta.env.VITE_API_NOTICE ?? "Point your tool to https://example.com/v1 to access the API. Your tool should be compatible to the OpenAI API specification";
 
@@ -44,8 +45,6 @@
             const ns = api.getNamespace();
             if (ns !== currentNamespace) {
               currentNamespace = ns;
-              // Silently ignore errors during background namespace refreshes;
-              // the user can trigger a manual refresh if needed.
               await Promise.all([loadTokens(), loadScopes()]).catch(() => {});
             }
           }, 500)
@@ -77,6 +76,7 @@
 </script>
 
 <svelte:head>
+  <link rel="icon" href={favicon} />
   <title>API Tokens</title>
 </svelte:head>
 

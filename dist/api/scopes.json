@@ -1,0 +1,27 @@
+[
+  {
+    "id": "read:data",
+    "name": "Read Data",
+    "description": "Read access to all data resources"
+  },
+  {
+    "id": "write:data",
+    "name": "Write Data",
+    "description": "Create, update, and delete data resources"
+  },
+  {
+    "id": "read:users",
+    "name": "Read Users",
+    "description": "View user profiles and account information"
+  },
+  {
+    "id": "write:users",
+    "name": "Write Users",
+    "description": "Modify user profiles and manage accounts"
+  },
+  {
+    "id": "admin",
+    "name": "Admin",
+    "description": "Full administrative access"
+  }
+]
