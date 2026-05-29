@@ -11,4 +11,5 @@ FROM caddy:2-alpine
 RUN apk upgrade
 COPY --from=build /app/dist /srv
 COPY Caddyfile /etc/caddy/Caddyfile
+RUN setcap -r /usr/bin/caddy
 EXPOSE 8080
