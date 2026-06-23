@@ -10,10 +10,10 @@
    ============================================================ */
 
 import type { Token, Scope, TokenExtensionDuration } from './types.js';
-import type { KfInputElement } from './kf-elements.js';
+import type { KfInputElement } from '../../shared/kf-elements.js';
 import * as api from './api.js';
 import { config } from './config.js';
-import { esc, must, maybe, formatDate, isExpired } from './dom.js';
+import { esc, must, maybe, formatDate, isExpired } from '../../shared/dom.js';
 
 interface State {
 	tokens: Token[];
