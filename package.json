@@ -1,24 +1,16 @@
 {
-  "name": "token-ui",
-  "private": true,
-  "version": "0.0.1",
-  "type": "module",
-  "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "build:demo": "BASE_PATH=/token-ui VITE_DEMO=true vite build && cp -r mocks/api dist/api",
-    "preview": "VITE_DEMO=true vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
-  },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^6.2.4",
-    "@tailwindcss/vite": "^4.3.0",
-    "@types/node": "^25.9.1",
-    "svelte": "^5.55.10",
-    "svelte-check": "^4.4.8",
-    "tailwindcss": "^4.3.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.3"
-  }
+	"name": "token-ui",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "node scripts/dev-server.mjs",
+		"build": "tsc && node scripts/build.mjs",
+		"build:demo": "tsc && DEMO=true node scripts/build.mjs",
+		"preview": "DEMO=true node scripts/dev-server.mjs",
+		"check": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"typescript": "^5.9.3"
+	}
 }

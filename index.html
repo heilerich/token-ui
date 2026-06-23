@@ -3,9 +3,167 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>API Tokens</title>
+		<link rel="icon" href="./favicon.svg" />
+
+		<!-- Kubeflow Design System (tokens + Material Icons + base resets) -->
+		<link rel="stylesheet" href="./ds/styles.css" />
+		<!-- Page styles -->
+		<link rel="stylesheet" href="./app.css" />
+		<!-- Design-system web components -->
+		<script src="./ds/kf-elements.js"></script>
+		<!-- Runtime configuration (apiPrefix / demo / apiNotice) -->
+		<script src="./config.js"></script>
 	</head>
 	<body>
-		<div id="app"></div>
-		<script type="module" src="/src/main.ts"></script>
+		<div class="page">
+			<kf-toolbar title="API Tokens" id="page-toolbar">
+				<kf-button slot="actions" variant="stroked" color="primary" icon="add" id="btn-new"
+					>New Token</kf-button
+				>
+			</kf-toolbar>
+
+			<div style="height: 16px"></div>
+
+			<kf-card no-padding id="tokens-card">
+				<div id="error-slot"></div>
+				<div id="table-slot">
+					<div class="empty-state">
+						<span class="material-icons">hourglass_empty</span>
+						<div style="margin-top: 8px">Loading…</div>
+					</div>
+				</div>
+				<div class="api-notice" id="api-notice"></div>
+			</kf-card>
+		</div>
+
+		<!-- ============================== Create Token Dialog ============================== -->
+		<div
+			class="kf-overlay"
+			id="dlg-create"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="dlg-create-title"
+		>
+			<div class="kf-dialog">
+				<div class="kf-dialog__header">
+					<h2 class="kf-dialog__title" id="dlg-create-title">Create New Token</h2>
+					<kf-icon-button icon="close" title="Close" data-close="dlg-create"></kf-icon-button>
+				</div>
+				<div class="kf-dialog__body">
+					<div id="create-error" class="error-strip" style="padding: 0 0 16px"></div>
+
+					<div class="field-group">
+						<kf-input id="inp-name" label="Token Name" placeholder="e.g. CI Pipeline" required></kf-input>
+					</div>
+
+					<div class="field-group">
+						<span class="field-label">Scopes</span>
+						<div class="scope-list" id="scope-list"></div>
+					</div>
+				</div>
+				<div class="kf-dialog__footer">
+					<kf-button variant="text" color="basic" data-close="dlg-create" id="btn-create-cancel"
+						>Cancel</kf-button
+					>
+					<kf-button variant="raised" color="primary" id="btn-create-submit" disabled
+						>Create Token</kf-button
+					>
+				</div>
+			</div>
+		</div>
+
+		<!-- ============================== Delete Confirm Dialog ============================== -->
+		<div
+			class="kf-overlay"
+			id="dlg-delete"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="dlg-delete-title"
+		>
+			<div class="kf-dialog">
+				<div class="kf-dialog__header">
+					<h2 class="kf-dialog__title" id="dlg-delete-title">Delete Token</h2>
+					<kf-icon-button icon="close" title="Close" data-close="dlg-delete"></kf-icon-button>
+				</div>
+				<div class="kf-dialog__body">
+					<div id="delete-error" class="error-strip" style="padding: 0 0 16px"></div>
+					<p>
+						Are you sure you want to delete the token <strong id="delete-name">—</strong>? This action
+						cannot be undone.
+					</p>
+				</div>
+				<div class="kf-dialog__footer">
+					<kf-button variant="text" color="basic" data-close="dlg-delete">Cancel</kf-button>
+					<kf-button variant="raised" color="warn" id="btn-delete-submit">Delete</kf-button>
+				</div>
+			</div>
+		</div>
+
+		<!-- ============================== Extend Token Dialog ============================== -->
+		<div
+			class="kf-overlay"
+			id="dlg-extend"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="dlg-extend-title"
+		>
+			<div class="kf-dialog">
+				<div class="kf-dialog__header">
+					<h2 class="kf-dialog__title" id="dlg-extend-title">Extend Token</h2>
+					<kf-icon-button icon="close" title="Close" data-close="dlg-extend"></kf-icon-button>
+				</div>
+				<div class="kf-dialog__body">
+					<div id="extend-error" class="error-strip" style="padding: 0 0 16px"></div>
+					<p style="margin-bottom: 16px">
+						Select how long to extend <strong id="extend-name">—</strong>.
+					</p>
+					<div class="radio-card-group" id="extend-options"></div>
+				</div>
+				<div class="kf-dialog__footer">
+					<kf-button variant="text" color="basic" data-close="dlg-extend">Cancel</kf-button>
+					<kf-button variant="raised" color="primary" id="btn-extend-submit">Extend</kf-button>
+				</div>
+			</div>
+		</div>
+
+		<!-- ============================== Secret Display Dialog ============================== -->
+		<div
+			class="kf-overlay"
+			id="dlg-secret"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="dlg-secret-title"
+		>
+			<div class="kf-dialog">
+				<div class="kf-dialog__header">
+					<h2 class="kf-dialog__title" id="dlg-secret-title">Token Created</h2>
+					<kf-icon-button icon="close" title="Close" data-close="dlg-secret"></kf-icon-button>
+				</div>
+				<div class="kf-dialog__body">
+					<kf-panel type="warning" title="Copy your token now">
+						You won't be able to see it again.
+					</kf-panel>
+					<div style="margin-top: 20px">
+						<span class="meta-label">Name</span>
+						<div id="secret-name" style="font-size: 14px">—</div>
+					</div>
+					<div style="margin-top: 16px">
+						<span class="meta-label">Secret</span>
+						<div class="secret-row">
+							<code class="secret-code" id="secret-value">—</code>
+							<kf-button variant="stroked" color="basic" icon="content_copy" id="btn-copy-secret"
+								>Copy</kf-button
+							>
+						</div>
+					</div>
+				</div>
+				<div class="kf-dialog__footer">
+					<kf-button variant="raised" color="primary" data-close="dlg-secret">Done</kf-button>
+				</div>
+			</div>
+		</div>
+
+		<script type="module" src="./app/main.js"></script>
 	</body>
 </html>

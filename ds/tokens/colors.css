@@ -1,0 +1,79 @@
+/* ============================================================
+   Kubeflow — Color tokens
+   Derived from kubeflow-common-lib (variables.scss, kubeflow.css)
+   and Angular Material's light theme. Kubeflow is a Material
+   Design product: a single blue primary, neutral greys built
+   from black opacities, and Material's semantic status colors.
+   ============================================================ */
+
+:root {
+  /* ---- Brand blue scale (variables.scss) ---- */
+  --kf-blue-50: #eef4ff;   /* tint, derived for surfaces */
+  --kf-blue-100: #bedcff;  /* $kubeflow-blue-hue-1 */
+  --kf-blue-200: #a1c3ff;  /* $kubeflow-blue-hue-2 */
+  --kf-blue-300: #6ca1ff;  /* $kubeflow-blue-hue-3 */
+  --kf-blue-500: #4279f4;  /* $kubeflow-blue-primary-hue — PRIMARY */
+  --kf-blue-700: #014bd1;  /* $kubeflow-blue-hue-4 */
+  --kf-blue-900: #0028aa;  /* $kubeflow-blue-hue-5 */
+
+  /* ---- Accent (kubeflow.css --accent-color) ---- */
+  --kf-accent: #007dfc;
+  --kf-accent-light: #69abff;
+  --kf-accent-dark: #0052c8;
+
+  /* ---- Deep brand navy (kubeflow.css --kubeflow-color) ---- */
+  --kf-navy: #003c75;
+
+  /* ---- Neutrals: black at Material opacities ---- */
+  --kf-black: #000000;
+  --kf-white: #ffffff;
+  --kf-ink-87: rgba(0, 0, 0, 0.87);  /* primary text */
+  --kf-ink-66: rgba(0, 0, 0, 0.66);  /* secondary text */
+  --kf-ink-38: rgba(0, 0, 0, 0.38);  /* disabled / hint */
+  --kf-ink-16: rgba(0, 0, 0, 0.16);  /* outlines */
+  --kf-ink-12: rgba(0, 0, 0, 0.12);  /* dividers */
+  --kf-ink-05: rgba(0, 0, 0, 0.05);  /* panel fill */
+
+  /* ---- Surfaces (kubeflow.css) ---- */
+  --kf-surface: #ffffff;
+  --kf-surface-sidebar: #f8fafb;
+  --kf-surface-hover: #f5f5f5;      /* table row hover */
+  --kf-surface-sunken: rgba(0, 0, 0, 0.05);
+  --kf-border: #f4f4f6;
+  --kf-divider: rgba(0, 0, 0, 0.12);
+  --kf-highlight: #ffffcd;          /* highlighted table row */
+
+  /* ---- Semantic status colors (Material status palette) ---- */
+  --kf-success: #1e8e3e;   /* ready / check_circle */
+  --kf-success-bg: #e6f4ea;
+  --kf-warning: #f9ab00;   /* warning */
+  --kf-warning-bg: #fef7e0;
+  --kf-error: #d93025;     /* error */
+  --kf-error-bg: #fce8e6;
+  --kf-info: #4279f4;      /* info / waiting (uses primary) */
+  --kf-info-bg: #eef4ff;
+  --kf-neutral: rgba(0, 0, 0, 0.38); /* stopped / uninitialized */
+
+  /* ============================================================
+     Semantic aliases — reference these in components
+     ============================================================ */
+  --color-primary: var(--kf-blue-500);
+  --color-primary-hover: var(--kf-blue-700);
+  --color-primary-contrast: var(--kf-white);
+  --color-link: var(--kf-blue-500);
+
+  --text-primary: var(--kf-ink-87);
+  --text-secondary: var(--kf-ink-66);
+  --text-disabled: var(--kf-ink-38);
+  --text-on-primary: var(--kf-white);
+
+  --surface-page: var(--kf-white);
+  --surface-card: var(--kf-white);
+  --surface-sidebar: var(--kf-surface-sidebar);
+  --surface-hover: var(--kf-surface-hover);
+  --surface-sunken: var(--kf-surface-sunken);
+
+  --border-default: var(--kf-border);
+  --border-strong: var(--kf-ink-16);
+  --border-divider: var(--kf-divider);
+}

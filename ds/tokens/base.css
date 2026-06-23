@@ -1,0 +1,62 @@
+/* ============================================================
+   Kubeflow — base resets & primitives
+   Mirrors kubeflow-common-lib styles.scss (html/body reset,
+   .lib-link, Material Icons baseline).
+   ============================================================ */
+
+html,
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font: var(--text-body-font);
+  letter-spacing: var(--letter-spacing-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Material Icons baseline (icon font loaded via styles.css @import) */
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+  user-select: none;
+}
+
+/* Links — kubeflow .lib-link */
+.lib-link {
+  color: var(--color-link);
+  text-decoration: none;
+  cursor: pointer;
+}
+.lib-link:visited {
+  color: var(--color-link);
+}
+.lib-link:hover {
+  text-decoration: underline;
+}
+
+/* Truncation helper used throughout the web apps */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

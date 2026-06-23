@@ -1,0 +1,11 @@
+/* ============================================================
+   Kubeflow Design System — global stylesheet entry point.
+   Consumers link THIS file. It is only @import lines.
+   All fonts (Roboto + Material Icons) are self-hosted — no external CDNs.
+   ============================================================ */
+
+@import './tokens/fonts.css';
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/base.css';

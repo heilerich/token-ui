@@ -1,4 +1,4 @@
-.svelte-kit/
-build/
+dist/
 node_modules/
 Dockerfile
+.git/
