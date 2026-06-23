@@ -4,7 +4,7 @@
 # Roboto and Material Icons fonts — are vendored in the repo (ds/assets),
 # so no CDN or font download happens here. The build runs fully offline
 # apart from `npm ci` resolving `typescript` from the configured registry.
-FROM node:20-alpine AS build
+FROM --platform=$BUILDPLATFORM node:20-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
