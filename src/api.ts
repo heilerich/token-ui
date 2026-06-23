@@ -5,11 +5,11 @@ import type {
 	Scope,
 	TokenExtensionDuration,
 	ExtendTokenRequest
-} from './types';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+} from './types.js';
+import { config } from './config.js';
 
-const API_PREFIX = import.meta.env.VITE_API_PREFIX ?? `${base}/api`;
-const DEMO_MODE = import.meta.env.VITE_DEMO === 'true';
+const API_PREFIX = config.apiPrefix;
+const DEMO_MODE = config.demo;
 
 const MAX_RETRIES = 5;
 const MAX_BACKOFF_MS = 10_000;
@@ -48,7 +48,10 @@ async function fetchWithRetry(url: string, options: RequestInit): Promise<Respon
 
 export function getNamespace(): string | null {
 	if (typeof window === 'undefined') return null;
-	return (new URLSearchParams(window.location.search)).get('ns') || (new URLSearchParams(window.parent.location.search)).get('ns');
+	return (
+		new URLSearchParams(window.location.search).get('ns') ||
+		new URLSearchParams(window.parent.location.search).get('ns')
+	);
 }
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
@@ -63,9 +66,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 		headers: !DEMO_MODE && body ? { 'Content-Type': 'application/json' } : undefined,
 		body: !DEMO_MODE && body ? JSON.stringify(body) : undefined
 	};
-	const res = DEMO_MODE
-		? await fetch(url, fetchOptions)
-		: await fetchWithRetry(url, fetchOptions);
+	const res = DEMO_MODE ? await fetch(url, fetchOptions) : await fetchWithRetry(url, fetchOptions);
 	if (!res.ok) {
 		const text = await res.text().catch(() => res.statusText);
 		throw new Error(`${method} ${path} failed: ${res.status} ${text}`);
@@ -136,6 +137,5 @@ export async function extendToken(id: string, duration: TokenExtensionDuration):
 }
 
 export async function listScopes(): Promise<Scope[]> {
-	if (DEMO_MODE) return request('GET', '/scopes');
 	return request('GET', '/scopes');
 }

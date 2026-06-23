@@ -1,0 +1,46 @@
+/* ============================================================
+   Kubeflow — Typography tokens
+   Roboto throughout (Material Design). Scale and metrics derived
+   from kubeflow-common-lib styles.scss typography config and
+   variables.scss.
+   ============================================================ */
+
+:root {
+  /* ---- Families ---- */
+  --font-sans: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* ---- Weights ---- */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;   /* Roboto Medium — the heaviest weight used */
+
+  /* ---- Sizes (variables.scss) ---- */
+  --font-size-xs: 12px;        /* captions, dense table meta */
+  --font-size-sm: 13px;        /* secondary / chips */
+  --font-size-body: 14px;      /* $kubeflow-font-size-regular — base UI text */
+  --font-size-lg: 16px;        /* emphasised body */
+  --font-size-title: 20px;     /* $kubeflow-font-size-large — card / section title */
+  --font-size-headline: 24px;  /* $kubeflow-font-size-xlarge — page headline */
+  --font-size-display: 34px;   /* hero / dashboard welcome */
+
+  /* ---- Line heights ---- */
+  --line-height-tight: 20px;   /* body-1 */
+  --line-height-snug: 24px;    /* title / headline */
+  --line-height-relaxed: 1.5;
+
+  /* ---- Letter spacing (Material levels) ---- */
+  --letter-spacing-body: 0.25px;
+  --letter-spacing-title: 0.15px;
+  --letter-spacing-headline: 0.18px;
+  --letter-spacing-button: 0.4px;  /* Material buttons are uppercased + tracked */
+
+  /* ============================================================
+     Semantic type roles
+     ============================================================ */
+  --text-display-font: var(--font-weight-regular) var(--font-size-display) / 1.2 var(--font-sans);
+  --text-headline-font: var(--font-weight-regular) var(--font-size-headline) / var(--line-height-snug) var(--font-sans);
+  --text-title-font: var(--font-weight-medium) var(--font-size-title) / var(--line-height-snug) var(--font-sans);
+  --text-body-font: var(--font-weight-regular) var(--font-size-body) / var(--line-height-tight) var(--font-sans);
+  --text-caption-font: var(--font-weight-regular) var(--font-size-xs) / 16px var(--font-sans);
+}

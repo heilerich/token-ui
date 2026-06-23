@@ -1,42 +1,42 @@
-# sv
+# token-ui
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A self-service **API token management** UI. Static single-page app, served behind a backend proxy that provides the API. It lists, creates, extends, and deletes API tokens; all authorization and lifecycle logic lives in the backend.
 
-## Creating a project
+Built with **plain Web Components + TypeScript** on the Kubeflow Design System — no framework, no bundler, no runtime dependencies. The only build tool is the TypeScript compiler.
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
+## Develop
 
 ```sh
-# recreate this project
-npx sv@0.12.5 create --template minimal --types ts --install npm .
+npm install        # installs a single dev dependency: typescript
+npm run dev        # tsc --watch + dev server with a mock API → http://localhost:5173
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Build
 
 ```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm run build      # → dist/  (static files, ready to serve)
+npm run check      # type-check only
+npm run preview    # serve the demo build locally
 ```
 
-## Building
+Serve `dist/` with any static file server. A `Dockerfile` (Caddy) is included.
 
-To create a production version of your app:
+## Configuration
+
+The app reads runtime configuration from `config.js` (`window.__APP_CONFIG__`) — no rebuild needed to retarget a deployment:
+
+| Field       | Default              | Description                              |
+|-------------|----------------------|------------------------------------------|
+| `apiPrefix` | `<base>/api`         | Where API calls are routed               |
+| `demo`      | `false`              | Run against in-memory fixtures           |
+| `apiNotice` | (built-in)           | Informational text in the table footer   |
+
+`scripts/build.mjs` regenerates `config.js` from the `API_PREFIX`, `API_NOTICE`, and `DEMO` environment variables, so the Docker image / CI can configure it at build time:
 
 ```sh
-npm run build
+docker build --build-arg API_PREFIX=/token-ui/api --build-arg API_NOTICE="…" -t token-ui .
 ```
 
-You can preview the production build with `npm run preview`.
+All fonts are self-hosted under `ds/assets/fonts` — nothing is fetched from a CDN at runtime, and the Docker build needs no network access for assets.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+See [AGENTS.md](./AGENTS.md) for architecture and contribution notes.
