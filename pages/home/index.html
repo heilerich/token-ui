@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Home</title>
+		<link rel="icon" href="./favicon.svg" />
+
+		<!-- Kubeflow Design System (tokens + Material Icons + base resets) — shared at site root -->
+		<link rel="stylesheet" href="../ds/styles.css" />
+		<!-- Page styles -->
+		<link rel="stylesheet" href="./app.css" />
+		<!-- Design-system web components -->
+		<script src="../ds/kf-elements.js"></script>
+		<!-- Runtime configuration (apiPrefix / demo) -->
+		<script src="./config.js"></script>
+	</head>
+	<body>
+		<!--
+			Content only: the surrounding top bar and sidebar are provided by the
+			host that embeds this page (Central Dashboard chrome), not by this app.
+		-->
+		<main class="home">
+			<div id="error-slot"></div>
+			<div id="announcements-slot"></div>
+			<div id="services-slot">
+				<div class="empty-state">
+					<span class="material-icons">hourglass_empty</span>
+					<div style="margin-top: 8px">Loading…</div>
+				</div>
+			</div>
+		</main>
+
+		<script type="module" src="./app/main.js"></script>
+	</body>
+</html>

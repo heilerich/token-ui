@@ -1,0 +1,221 @@
+/* ============================================================
+   Home dashboard — page styles.
+   Built entirely on the Kubeflow Design System CSS custom
+   properties (ds/tokens/*). No utility framework.
+
+   Content-only: no top bar / sidebar — that chrome is owned by
+   the host embedding this page.
+   ============================================================ */
+
+body {
+	background: #eef0f2;
+}
+
+.home {
+	padding: var(--page-padding-x);
+	max-width: 1100px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+/* ---------- Generic card ---------- */
+.card {
+	background: var(--surface-card);
+	border-radius: var(--radius);
+	box-shadow: var(--elevation-4);
+	overflow: hidden;
+}
+.card__header {
+	height: 48px;
+	display: flex;
+	align-items: center;
+	padding: 0 16px;
+	border-bottom: 1px solid var(--border-divider);
+}
+.card__title {
+	font: var(--font-weight-medium) 14px/1 var(--font-sans);
+	color: var(--text-primary);
+}
+
+/* ---------- Announcements ---------- */
+.announcements__grid {
+	padding: 12px 16px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+.announcement {
+	display: flex;
+	gap: 12px;
+	padding: 12px 14px;
+	border-radius: var(--radius);
+}
+.announcement--info {
+	background: var(--kf-info-bg);
+}
+.announcement--important {
+	background: var(--kf-warning-bg);
+}
+.announcement__icon {
+	font-size: 20px;
+	flex: none;
+	margin-top: 1px;
+}
+.announcement--info .announcement__icon {
+	color: var(--kf-info);
+}
+.announcement--important .announcement__icon {
+	color: var(--kf-warning);
+}
+.announcement__content {
+	flex: 1;
+	min-width: 0;
+}
+.announcement__title {
+	font: var(--font-weight-medium) 13px/1.3 var(--font-sans);
+	color: var(--text-primary);
+	margin-bottom: 4px;
+}
+.announcement__body {
+	font: var(--font-weight-regular) 12px/1.5 var(--font-sans);
+	color: var(--text-secondary);
+}
+.announcement__link {
+	margin-top: 6px;
+}
+.announcement__link .lib-link {
+	font-size: 12px;
+}
+
+/* Inline link treatment (matches the design system's accent links) */
+.lib-link {
+	color: var(--color-link);
+	text-decoration: none;
+}
+.lib-link:hover {
+	text-decoration: underline;
+}
+
+/* ---------- Platform services ---------- */
+.section-label {
+	font: var(--font-weight-medium) 11px/1 var(--font-sans);
+	letter-spacing: 0.7px;
+	text-transform: uppercase;
+	color: var(--text-disabled);
+	margin-bottom: 12px;
+}
+.services-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 16px;
+}
+.service-card {
+	background: var(--surface-card);
+	border-radius: var(--radius);
+	box-shadow: var(--elevation-4);
+	padding: 20px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	position: relative;
+	text-decoration: none;
+	color: inherit;
+	transition: box-shadow var(--duration) var(--ease-standard);
+}
+.service-card:hover {
+	box-shadow: var(--elevation-8);
+}
+.service-card:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+.service-card__icon {
+	font-size: 36px;
+	color: var(--color-primary);
+	margin-bottom: 2px;
+}
+.service-card__title {
+	font: var(--font-weight-medium) 15px/1.3 var(--font-sans);
+	color: var(--text-primary);
+}
+.service-card__desc {
+	font: var(--font-weight-regular) 13px/1.5 var(--font-sans);
+	color: var(--text-secondary);
+	flex: 1;
+}
+.service-card__cta {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	font: var(--font-weight-regular) 13px/1 var(--font-sans);
+	color: var(--color-primary);
+	margin-top: 4px;
+}
+.service-card__cta .material-icons {
+	font-size: 16px;
+}
+
+/* ---------- Status badge ---------- */
+.badge {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	display: inline-flex;
+	align-items: center;
+	height: 20px;
+	padding: 0 8px;
+	border-radius: 10px;
+	font: var(--font-weight-medium) 11px/1 var(--font-sans);
+}
+.badge--success {
+	background: var(--kf-success-bg);
+	color: var(--kf-success);
+}
+.badge--warning {
+	background: var(--kf-warning-bg);
+	color: var(--kf-warning);
+}
+.badge--error {
+	background: var(--kf-error-bg);
+	color: var(--kf-error);
+}
+.badge--info {
+	background: var(--kf-info-bg);
+	color: var(--kf-info);
+}
+.badge--neutral {
+	background: var(--surface-sunken);
+	color: var(--text-secondary);
+}
+
+/* ---------- States ---------- */
+.empty-state {
+	padding: 64px 24px;
+	text-align: center;
+	color: var(--text-secondary);
+}
+.empty-state .material-icons {
+	font-size: 40px;
+	color: var(--kf-ink-38);
+}
+.error-strip {
+	margin-bottom: 20px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+	.services-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+@media (max-width: 680px) {
+	.announcements__grid {
+		grid-template-columns: 1fr;
+	}
+	.services-grid {
+		grid-template-columns: 1fr;
+	}
+}

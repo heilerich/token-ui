@@ -10,12 +10,15 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 
-# Per-deployment configuration baked into config.js at build time.
-# Override with --build-arg. Leave API_PREFIX empty to use the default
-# (<base>/api, resolved at runtime from the page's base URL).
-ARG API_PREFIX=""
+# Per-deployment configuration baked into each page's config.js at build time.
+# Override with --build-arg. Each page's API prefix defaults to <base>/api,
+# resolved at runtime from the page's base URL (e.g. /home/api, /token-ui/api),
+# so the common case needs no overrides.
+ARG HOME_API_PREFIX=""
+ARG TOKEN_UI_API_PREFIX=""
 ARG API_NOTICE="Point your tool to https://example.com/v1 to access the API. Your tool should be compatible to the OpenAI API specification."
-ENV API_PREFIX=${API_PREFIX}
+ENV HOME_API_PREFIX=${HOME_API_PREFIX}
+ENV TOKEN_UI_API_PREFIX=${TOKEN_UI_API_PREFIX}
 ENV API_NOTICE=${API_NOTICE}
 RUN npm run build
 

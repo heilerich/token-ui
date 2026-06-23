@@ -1,0 +1,16 @@
+[
+	{
+		"id": "kfp-2-3-upgrade",
+		"title": "KFP v2.3 upgrade — July 14",
+		"body": "Pipelines SDK migrates to v2 IR format. Update your pipeline definitions before the cutover.",
+		"category": "important",
+		"link": { "label": "Read the migration guide", "href": "https://www.kubeflow.org/docs/components/pipelines/" }
+	},
+	{
+		"id": "a100-nodes",
+		"title": "New A100 GPU nodes available",
+		"body": "4× A100-80GB nodes added to the cluster.",
+		"category": "info",
+		"link": { "label": "Request access", "href": "#" }
+	}
+]

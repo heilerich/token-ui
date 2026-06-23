@@ -3,8 +3,8 @@
 		"target": "ES2022",
 		"module": "ESNext",
 		"moduleResolution": "bundler",
-		"rootDir": "src",
-		"outDir": "dist/app",
+		"rootDir": "pages",
+		"outDir": "dist/_ts",
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
 		"strict": true,
 		"noUnusedLocals": true,
@@ -17,5 +17,5 @@
 		"declaration": false,
 		"verbatimModuleSyntax": true
 	},
-	"include": ["src/**/*.ts"]
+	"include": ["pages/**/*.ts"]
 }

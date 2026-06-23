@@ -1,5 +1,20 @@
 :8080 {
 	root * /srv
+	encode gzip
 	file_server
-	try_files {path} /index.html
+
+	# Each page is mounted under its own prefix and falls back to its own
+	# index.html (so a deep link inside a page still resolves). Shared assets
+	# (/ds, /shared) are plain static files served by file_server above.
+	handle /home/* {
+		try_files {path} /home/index.html
+	}
+	handle /token-ui/* {
+		try_files {path} /token-ui/index.html
+	}
+
+	# Site root → home (static redirect page lives at /index.html).
+	handle {
+		try_files {path} /index.html
+	}
 }

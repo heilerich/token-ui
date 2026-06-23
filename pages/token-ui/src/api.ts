@@ -1,0 +1,75 @@
+import type {
+	Token,
+	CreateTokenRequest,
+	CreateTokenResponse,
+	Scope,
+	TokenExtensionDuration,
+	ExtendTokenRequest
+} from './types.js';
+import { request, isDemo as DEMO_MODE } from '../../shared/http.js';
+
+// Re-export so the page controller keeps importing namespace handling from `api`.
+export { getNamespace } from '../../shared/http.js';
+
+let demoTokens: Token[] | null = null;
+let nextDemoId = 1;
+
+async function getDemoTokens(): Promise<Token[]> {
+	if (!demoTokens) {
+		demoTokens = await request<Token[]>('GET', '/tokens');
+	}
+	return demoTokens;
+}
+
+export async function listTokens(): Promise<Token[]> {
+	if (DEMO_MODE) return [...(await getDemoTokens())];
+	return request('GET', '/tokens');
+}
+
+export async function createToken(req: CreateTokenRequest): Promise<CreateTokenResponse> {
+	if (DEMO_MODE) {
+		const tokens = await getDemoTokens();
+		const token: Token = {
+			id: `tok_demo_${nextDemoId++}`,
+			name: req.name,
+			scopes: req.scopes,
+			expires_at: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+			created_at: new Date().toISOString()
+		};
+		tokens.push(token);
+		return { token, secret: `sk_demo_${crypto.randomUUID().replace(/-/g, '')}` };
+	}
+	return request('POST', '/tokens', req);
+}
+
+export async function deleteToken(id: string): Promise<void> {
+	if (DEMO_MODE) {
+		const tokens = await getDemoTokens();
+		const idx = tokens.findIndex((t) => t.id === id);
+		if (idx !== -1) tokens.splice(idx, 1);
+		return;
+	}
+	return request('DELETE', `/tokens/${encodeURIComponent(id)}`);
+}
+
+function durationToMs(duration: TokenExtensionDuration): number {
+	const match = duration.match(/^(\d+)h$/);
+	if (!match) throw new Error(`Unsupported duration: ${duration}`);
+	return Number(match[1]) * 60 * 60 * 1000;
+}
+
+export async function extendToken(id: string, duration: TokenExtensionDuration): Promise<Token> {
+	if (DEMO_MODE) {
+		const tokens = await getDemoTokens();
+		const token = tokens.find((t) => t.id === id);
+		if (!token) throw new Error('Token not found');
+		token.expires_at = new Date(Date.now() + durationToMs(duration)).toISOString();
+		return { ...token };
+	}
+	const body: ExtendTokenRequest = { duration };
+	return request('PATCH', `/tokens/${encodeURIComponent(id)}`, body);
+}
+
+export async function listScopes(): Promise<Scope[]> {
+	return request('GET', '/scopes');
+}
