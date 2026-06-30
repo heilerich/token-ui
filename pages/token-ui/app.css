@@ -9,7 +9,20 @@ body {
 }
 
 .page {
-	padding: var(--page-padding-x);
+	/* Full-bleed horizontally so the table spans the embed width like the
+	   Central Dashboard's own tables; vertical breathing room only. */
+	padding: var(--page-padding-x) 0;
+}
+
+/* Align table content + footer with the toolbar title's 20px inset so the
+   whole page shares one left/right edge (no floating side margins). */
+.kf-table th:first-child,
+.kf-table td:first-child {
+	padding-left: var(--page-padding-x);
+}
+.kf-table th:last-child,
+.kf-table td:last-child {
+	padding-right: var(--page-padding-x);
 }
 
 /* expired-row tint — matches DS error-bg but very subtle */
@@ -34,7 +47,7 @@ body {
 
 /* Footer hint inside the card */
 .api-notice {
-	padding: 14px 16px;
+	padding: 14px var(--page-padding-x);
 	font: var(--text-caption-font);
 	color: var(--text-secondary);
 	border-top: 1px solid var(--border-divider);
@@ -52,7 +65,7 @@ body {
 
 /* ---------- Inline error banner above table ---------- */
 .error-strip {
-	padding: 16px 16px 0;
+	padding: 16px var(--page-padding-x) 0;
 }
 .error-dismiss {
 	margin-left: auto;
