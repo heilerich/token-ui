@@ -4,14 +4,19 @@
    properties (ds/tokens/*). No utility framework.
    ============================================================ */
 
-body {
-	background: var(--surface-sidebar);
-}
-
 .page {
 	/* Full-bleed horizontally so the table spans the embed width like the
 	   Central Dashboard's own tables; vertical breathing room only. */
 	padding: var(--page-padding-x) 0;
+}
+
+/* Flat, full-bleed table — drop the floating card chrome (elevation +
+   rounded corners) so the table sits directly on the white page, matching
+   the Central Dashboard's native tables. The kf-card component applies its
+   elevation as an inline style, so !important is required to override it. */
+#tokens-card {
+	box-shadow: none !important;
+	border-radius: 0;
 }
 
 /* Align table content + footer with the toolbar title's 20px inset so the
