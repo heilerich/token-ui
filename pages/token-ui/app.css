@@ -10,8 +10,6 @@ body {
 
 .page {
 	padding: var(--page-padding-x);
-	max-width: 1200px;
-	margin: 0 auto;
 }
 
 /* expired-row tint — matches DS error-bg but very subtle */
