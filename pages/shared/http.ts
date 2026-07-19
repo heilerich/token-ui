@@ -21,7 +21,7 @@ function sleep(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function fetchWithRetry(url: string, options: RequestInit): Promise<Response> {
+export async function fetchWithRetry(url: string, options: RequestInit): Promise<Response> {
 	let lastNetworkError: unknown;
 	for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
 		let res: Response;

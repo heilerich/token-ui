@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-home
+  namespace: kubeflow
+data:
+  services: |
+    [
+      {
+        "id": "notebooks",
+        "title": "Notebook Servers",
+        "icon": "book",
+        "description": "Launch Jupyter environments with custom images, GPU/CPU configs, and persistent storage.",
+        "href": "/notebooks/",
+        "cta": "Open",
+        "status": { "label": "2 Running", "tone": "success" }
+      },
+      {
+        "id": "pipelines",
+        "title": "Pipelines",
+        "icon": "account_tree",
+        "description": "Build, schedule and monitor ML workflows using the Kubeflow Pipelines SDK.",
+        "href": "/pipeline/",
+        "cta": "Open"
+      },
+      {
+        "id": "batch-jobs",
+        "title": "Batch Jobs",
+        "icon": "cloud_queue",
+        "description": "Submit distributed training and processing jobs. Supports PyTorchJob, TFJob, and MPIJob.",
+        "href": "/jobs/",
+        "cta": "Open"
+      },
+      {
+        "id": "volumes",
+        "title": "Volumes",
+        "icon": "storage",
+        "description": "Create and manage persistent volume claims for datasets, model checkpoints, and shared artifacts.",
+        "href": "/volumes/"
+      }
+    ]
+  announcements: |
+    [
+      {
+        "id": "welcome",
+        "title": "Welcome to Kubeflow",
+        "body": "Get started by launching a notebook server or creating a pipeline.",
+        "category": "info",
+        "link": { "label": "Documentation", "href": "https://www.kubeflow.org/docs/" }
+      }
+    ]

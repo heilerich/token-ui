@@ -1,11 +1,11 @@
 /* ============================================================
-   Home dashboard — API contract.
+   Home dashboard — data model.
 
-   The page is static chrome around two API-driven regions:
-     • platform service cards  (GET /services)
-     • announcements           (GET /announcements)
-   See pages/home/mocks/api/*.json for the demo fixtures, and
-   AGENTS.md for the full endpoint table.
+   The page renders two regions driven by the `dashboard-home`
+   ConfigMap (namespace `kubeflow`):
+     • platform service cards  (data.services)
+     • announcements           (data.announcements)
+   See pages/home/example-configmap.yaml for the expected shape.
    ============================================================ */
 
 /**
@@ -60,4 +60,10 @@ export interface Announcement {
 	body: string;
 	category: AnnouncementCategory;
 	link?: AnnouncementLink;
+}
+
+/** Combined payload returned by the ConfigMap-backed data loader. */
+export interface HomeData {
+	services: PlatformService[];
+	announcements: Announcement[];
 }

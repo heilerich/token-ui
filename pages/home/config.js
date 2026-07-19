@@ -12,5 +12,6 @@
  */
 window.__APP_CONFIG__ = {
 	// apiPrefix: '/home/api',
+	// k8sApiPrefix: '/api/k8s',
 	// demo: false,
 };

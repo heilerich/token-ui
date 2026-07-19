@@ -1,14 +1,14 @@
 /* ============================================================
    Home dashboard — application controller.
 
-   Renders two API-driven regions on top of the Kubeflow Design
-   System tokens: an announcements panel and a grid of platform
-   service cards. The page is content-only — the surrounding
-   top bar / sidebar chrome is provided by the host that embeds
-   this page (as an iframe), not by this project.
+   Renders two ConfigMap-driven regions on top of the Kubeflow
+   Design System tokens: an announcements panel and a grid of
+   platform service cards. Data is read from the `dashboard-home`
+   ConfigMap in the `kubeflow` namespace via the K8s API proxy.
 
-   Mirrors the token-ui page: this module owns all state and view
-   logic; the API client (api.ts) stays a thin transport.
+   The page is content-only — the surrounding top bar / sidebar
+   chrome is provided by the host that embeds this page (as an
+   iframe), not by this project.
    ============================================================ */
 
 import type {
@@ -18,7 +18,6 @@ import type {
 	StatusTone
 } from './types.js';
 import * as api from './api.js';
-import { getNamespace } from '../../shared/http.js';
 import { esc, must } from '../../shared/dom.js';
 
 interface State {
@@ -145,21 +144,14 @@ function rerender(): void {
 	renderServices();
 }
 
-/* ----------------------------- load & refresh ----------------------------- */
-async function loadAll(): Promise<void> {
-	const [services, announcements] = await Promise.all([
-		api.listServices(),
-		api.listAnnouncements()
-	]);
-	state.services = services;
-	state.announcements = announcements;
-}
-
+/* ----------------------------- load ----------------------------- */
 async function load(): Promise<void> {
 	state.loading = true;
 	rerender();
 	try {
-		await loadAll();
+		const data = await api.loadHomeData();
+		state.services = data.services;
+		state.announcements = data.announcements;
 		state.error = null;
 	} catch (err) {
 		state.error = err instanceof Error ? err.message : 'Failed to load';
@@ -169,30 +161,6 @@ async function load(): Promise<void> {
 	}
 }
 
-/**
- * When embedded in the Kubeflow Central Dashboard (an iframe), the namespace is
- * selected by the parent frame. Poll for changes and refresh — mirrors the
- * token-ui page's behaviour.
- */
-function startNamespacePolling(): void {
-	if (window.parent === window) return;
-	let current = getNamespace();
-	setInterval(async () => {
-		const ns = getNamespace();
-		if (ns !== current) {
-			current = ns;
-			try {
-				await loadAll();
-				state.error = null;
-			} catch {
-				/* keep last good state on transient errors */
-			}
-			rerender();
-		}
-	}, 500);
-}
-
 export function init(): void {
 	void load();
-	startNamespacePolling();
 }

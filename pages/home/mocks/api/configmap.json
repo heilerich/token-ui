@@ -1,0 +1,12 @@
+{
+	"apiVersion": "v1",
+	"kind": "ConfigMap",
+	"metadata": {
+		"name": "dashboard-home",
+		"namespace": "kubeflow"
+	},
+	"data": {
+		"services": "[{\"id\":\"notebooks\",\"title\":\"Notebook Servers\",\"icon\":\"book\",\"description\":\"Launch Jupyter environments with custom images, GPU/CPU configs, and persistent storage.\",\"href\":\"/notebooks/\",\"cta\":\"Open\",\"status\":{\"label\":\"2 Running\",\"tone\":\"success\"}},{\"id\":\"pipelines\",\"title\":\"Pipelines\",\"icon\":\"account_tree\",\"description\":\"Build, schedule and monitor ML workflows using the Kubeflow Pipelines SDK.\",\"href\":\"/pipeline/\",\"cta\":\"Open\",\"status\":{\"label\":\"3 runs today\",\"tone\":\"warning\"}},{\"id\":\"batch-jobs\",\"title\":\"Batch Jobs\",\"icon\":\"cloud_queue\",\"description\":\"Submit distributed training and processing jobs. Supports PyTorchJob, TFJob, and MPIJob.\",\"href\":\"/jobs/\",\"cta\":\"Open\",\"status\":{\"label\":\"1 Running\",\"tone\":\"success\"}},{\"id\":\"llm-backend\",\"title\":\"LLM Backend\",\"icon\":\"smart_toy\",\"description\":\"Query hosted large language models via REST API. OpenAI-compatible endpoints with streaming support.\",\"href\":\"/llm/\",\"cta\":\"API docs\",\"status\":{\"label\":\"Online\",\"tone\":\"success\"}},{\"id\":\"experiments\",\"title\":\"Experiments\",\"icon\":\"science\",\"description\":\"Track, compare and visualize training runs and hyperparameter experiments across your namespace.\",\"href\":\"/experiments/\"},{\"id\":\"volumes\",\"title\":\"Volumes\",\"icon\":\"storage\",\"description\":\"Create and manage persistent volume claims for datasets, model checkpoints, and shared artifacts.\",\"href\":\"/volumes/\"}]",
+		"announcements": "[{\"id\":\"kfp-2-3-upgrade\",\"title\":\"KFP v2.3 upgrade — July 14\",\"body\":\"Pipelines SDK migrates to v2 IR format. Update your pipeline definitions before the cutover.\",\"category\":\"important\",\"link\":{\"label\":\"Read the migration guide\",\"href\":\"https://www.kubeflow.org/docs/components/pipelines/\"}},{\"id\":\"a100-nodes\",\"title\":\"New A100 GPU nodes available\",\"body\":\"4× A100-80GB nodes added to the cluster.\",\"category\":\"info\",\"link\":{\"label\":\"Request access\",\"href\":\"#\"}}]"
+	}
+}
