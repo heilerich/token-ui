@@ -119,14 +119,15 @@ async function tokenUiApi(req, res, sub) {
 /* ---- home: read-only mock ---- */
 async function homeApi(req, res, sub) {
 	if (req.method !== 'GET') return false;
-	if (sub === '/services') return sendJson(res, 200, fixtures.home.services);
-	if (sub === '/announcements') return sendJson(res, 200, fixtures.home.announcements);
+	if (sub === '/k8s/api/v1/namespaces/kubeflow/configmaps/dashboard-home' ||
+		sub === '/api/v1/namespaces/kubeflow/configmaps/dashboard-home')
+		return sendJson(res, 200, fixtures.home.configmap);
 	return false;
 }
 
 /* ------------------------------- pages ------------------------------- */
 const PAGES = [
-	{ dir: 'home', prefix: 'home', api: homeApi, fixtures: ['services', 'announcements'] },
+	{ dir: 'home', prefix: 'home', api: homeApi, fixtures: ['configmap'] },
 	{ dir: 'token-ui', prefix: 'token-ui', api: tokenUiApi, fixtures: ['tokens', 'scopes'] }
 ];
 const byPrefix = new Map(PAGES.map((p) => [p.prefix, p]));
@@ -152,6 +153,21 @@ const server = createServer(async (req, res) => {
 	if (path === '/') {
 		res.writeHead(302, { Location: '/home/' });
 		res.end();
+		return;
+	}
+
+	// K8s API proxy (mirrors the real Kubeflow central dashboard path).
+	if (path.startsWith('/api/k8s/')) {
+		const sub = path.slice('/api/k8s'.length); // e.g. /api/v1/namespaces/...
+		if (DEMO) {
+			res.writeHead(404);
+			res.end('Not found');
+			return;
+		}
+		const handled = await homeApi(req, res, sub);
+		if (handled !== false) return;
+		res.writeHead(404);
+		res.end('Not found');
 		return;
 	}
 

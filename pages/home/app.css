@@ -35,7 +35,7 @@ body {
 	border-bottom: 1px solid var(--border-divider);
 }
 .card__title {
-	font: var(--font-weight-medium) 14px/1 var(--font-sans);
+	font: var(--font-weight-medium) 15px/1 var(--font-sans);
 	color: var(--text-primary);
 }
 
@@ -74,19 +74,19 @@ body {
 	min-width: 0;
 }
 .announcement__title {
-	font: var(--font-weight-medium) 13px/1.3 var(--font-sans);
+	font: var(--font-weight-medium) 15px/1.3 var(--font-sans);
 	color: var(--text-primary);
 	margin-bottom: 4px;
 }
 .announcement__body {
-	font: var(--font-weight-regular) 12px/1.5 var(--font-sans);
+	font: var(--font-weight-regular) 14px/1.5 var(--font-sans);
 	color: var(--text-secondary);
 }
 .announcement__link {
 	margin-top: 6px;
 }
 .announcement__link .lib-link {
-	font-size: 12px;
+	font-size: 14px;
 }
 
 /* Inline link treatment (matches the design system's accent links) */
@@ -100,7 +100,7 @@ body {
 
 /* ---------- Platform services ---------- */
 .section-label {
-	font: var(--font-weight-medium) 11px/1 var(--font-sans);
+	font: var(--font-weight-medium) 12px/1 var(--font-sans);
 	letter-spacing: 0.7px;
 	text-transform: uppercase;
 	color: var(--text-disabled);
@@ -138,11 +138,11 @@ body {
 	margin-bottom: 2px;
 }
 .service-card__title {
-	font: var(--font-weight-medium) 15px/1.3 var(--font-sans);
+	font: var(--font-weight-medium) 16px/1.3 var(--font-sans);
 	color: var(--text-primary);
 }
 .service-card__desc {
-	font: var(--font-weight-regular) 13px/1.5 var(--font-sans);
+	font: var(--font-weight-regular) 14px/1.5 var(--font-sans);
 	color: var(--text-secondary);
 	flex: 1;
 }
@@ -150,7 +150,7 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 2px;
-	font: var(--font-weight-regular) 13px/1 var(--font-sans);
+	font: var(--font-weight-regular) 14px/1 var(--font-sans);
 	color: var(--color-primary);
 	margin-top: 4px;
 }
@@ -168,7 +168,7 @@ body {
 	height: 20px;
 	padding: 0 8px;
 	border-radius: 10px;
-	font: var(--font-weight-medium) 11px/1 var(--font-sans);
+	font: var(--font-weight-medium) 12px/1 var(--font-sans);
 }
 .badge--success {
 	background: var(--kf-success-bg);
